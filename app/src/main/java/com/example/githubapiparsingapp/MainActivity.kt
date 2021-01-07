@@ -1,9 +1,14 @@
 package com.example.githubapiparsingapp
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.text.Layout
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.githubapiparsingapp.databinding.ActivityMainBinding
@@ -21,10 +26,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-        //setContentView(R.layout.activity_main)
+        var str: String = ""
 
+        searchBtn.setOnClickListener { view ->
+            str = editText_User.text.toString()
+            searchUsersUserRepos(str)
+        }
+
+    }
+
+    fun searchUsersUserRepos(user: String? = ""){
         val retrofit = Retrofit.Builder()
                 .baseUrl("https://api.github.com")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -32,30 +45,41 @@ class MainActivity : AppCompatActivity() {
 
         val api = retrofit.create(RetrofitNetwork::class.java)
 
-        val call: Call<List<UsersUserRepos>> = api.reposUser("laravel")
+        val call: Call<List<UsersUserRepos>> = api.reposUser(user!!)
 
-        call.enqueue(object: Callback<List<UsersUserRepos>> {
+        call.enqueue(object : Callback<List<UsersUserRepos>> {
             override fun onResponse(call: Call<List<UsersUserRepos>>, response: Response<List<UsersUserRepos>>) {
                 val userRepos: List<UsersUserRepos>? = response.body()
-
                 var userRepo = ""
-                var resultText: String = ""
-                userRepos?.forEach { it -> userRepo += "$it\n" }
 
-                resultText = String.format(userRepo)
+                for (i in 0..userRepos?.size!!.minus(1)) {
+                    var reposId: String? = userRepos.get(i).id
+                    var reposNodeId: String? = userRepos.get(i).node_id
+                    userRepo += "ID:$reposId\nNodeID:$reposNodeId\n"
 
-                resultTextView.text = resultText
+                    userRepos.get(i).owner?.let {
+                        userRepo += "OwnerID:${it.id}\n" +
+                                "OwnerNodeID:${it.node_id}\n" +
+                                "OwnerLogin:${it.login}\n"
+                    }
 
+                    userRepos.get(i).license?.let {
+                        userRepo += "LicenseKey:${it.key}\n" +
+                                "LicenseNodeID:${it.node_id}\n" +
+                                "LicenseLogin:${it.name}\n"
+                    }
+                    userRepo += "\n"
+                }
+                resultTextView.text = userRepo
             }
 
             override fun onFailure(call: Call<List<UsersUserRepos>>, t: Throwable) {
-                Log.e("debugTest","error:(${t.message})")
+                Log.e("debugTest", "error:(${t.message})")
             }
         })
 
-
-
     }
+
 
 }
 

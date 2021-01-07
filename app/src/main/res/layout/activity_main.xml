@@ -1,18 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="UsersUserRepos"
-            type="com.example.githubapiparsingapp.MainActivity" />
+            name="searchtext"
+            type="com.example.githubapiparsingapp.MainActivity"/>
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editText_User"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7">
+
+            </EditText>
+
+            <Button
+                android:id="@+id/searchBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="search">
+
+            </Button>
+
+
+        </LinearLayout>
+
+
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
@@ -26,12 +51,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:gravity="left"
-                android:textSize="18sp"
-                android:text="@string/data_text"/>
+                android:textSize="18sp">
+
+            </TextView>
+
         </ScrollView>
 
-
     </LinearLayout>
-
 
 </layout>
