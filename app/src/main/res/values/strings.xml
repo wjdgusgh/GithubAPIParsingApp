@@ -1,4 +1,3 @@
 <resources>
     <string name="app_name">GithubAPIParsingApp</string>
-    <string name="data_text">%1$s</string>
 </resources>

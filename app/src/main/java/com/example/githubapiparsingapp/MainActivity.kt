@@ -26,18 +26,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
-
-        var str: String = ""
-
-        searchBtn.setOnClickListener { view ->
-            str = editText_User.text.toString()
-            searchUsersUserRepos(str)
-        }
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.searchtext = this@MainActivity
 
     }
 
-    fun searchUsersUserRepos(user: String? = ""){
+    fun searchBtnClick(view: View){
+        var username: String = editText_User.text.toString()
+        searchUsersUserRepos(username)
+    }
+
+    private fun searchUsersUserRepos(user: String? = ""){
         val retrofit = Retrofit.Builder()
                 .baseUrl("https://api.github.com")
                 .addConverterFactory(GsonConverterFactory.create())

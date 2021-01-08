@@ -7,5 +7,4 @@ import retrofit2.http.Path
 interface RetrofitNetwork {
     @GET("/users/{user}/repos")
     fun reposUser(@Path("user") user: String): Call<List<UsersUserRepos>>
-
 }
